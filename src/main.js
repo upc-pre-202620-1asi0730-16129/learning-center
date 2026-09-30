@@ -6,6 +6,7 @@ import 'primeflex/primeflex.css'
 import 'primeicons/primeicons.css'
 import {SelectButton} from "primevue";
 import i18n from "@/i18n.js";
+import pinia from "@/pinia.js";
 
 const primeUiLicenseKey = import.meta.env.VITE_PRIME_UI_LICENSE_KEY;
 createApp(App)
@@ -18,4 +19,5 @@ createApp(App)
         }
     })
     .component('pv-select-button', SelectButton)
+    .use(pinia)
     .mount('#app')

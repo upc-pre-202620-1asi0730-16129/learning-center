@@ -1,0 +1,150 @@
+import {defineStore} from "pinia";
+import {computed, ref} from "vue";
+import {PublishingApi} from "@/publishing/infrastructure/publishing-api.js";
+import {CategoryAssembler} from "@/publishing/infrastructure/category.assembler.js";
+import {parse} from "vite";
+import {TutorialAssembler} from "@/publishing/infrastructure/tutorial.assembler.js";
+
+const publishingApi = new PublishingApi();
+
+const usePublishingStore = defineStore("publishing", () => {
+    const categories = ref([]);
+
+    const tutorials = ref([]);
+
+    const errors = ref([]);
+
+    const categoriesLoaded = ref(false);
+
+    const tutorialsLoaded = ref(false);
+
+    const categoriesCount = computed(() => {
+        return categoriesLoaded ? categories.value.length : 0;
+    });
+
+    const tutorialCount = computed(() => {
+        return tutorialsLoaded ? tutorials.value.length : 0;
+    });
+
+    function fetchCategories() {
+        publishingApi.getCategories().then((response) => {
+            categories.value = CategoryAssembler.toEntitiesFromResponse(response);
+            categoriesLoaded.value = true;
+            console.log(categoriesLoaded.value);
+            console.log(categories.value);
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    function getCategoryById(id) {
+        let idNum = parseInt(id);
+        return categories.value.find(category => category["id"] === idNum);
+    }
+
+    function addCategory(category) {
+        publishingApi.createCategory(category).then((response) => {
+            const resource = response.data;
+            const newCategory = CategoryAssembler.toEntityFromResource(resource);
+            categories.value.push(newCategory);
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    function updateCategory(category) {
+        publishingApi.updateCategory(category).then((response) => {
+            const resource = response.data;
+            const updatedCategory = CategoryAssembler.toEntityFromResource(resource);
+            const index = categories.value.findIndex(c => c["id"] === updatedCategory.id);
+            if (index !== -1) {
+                categories.value[index] = updatedCategory;
+            }
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    function deleteCategory(category) {
+        publishingApi.deleteCategory(category.id).then((response) => {
+            const index = categories.value.findIndex(c => c["id"] === category.id);
+            if (index !== -1) {
+                categories.value.splice(index, 1);
+            }
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    function fetchTutorials() {
+        publishingApi.getTutorials().then((response) => {
+            tutorials.value = response.data;
+            tutorialsLoaded.value = true;
+            console.log(tutorialsLoaded.value);
+            console.log(tutorials.value);
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    function getTutorialById(id) {
+        let idNum = parseInt(id);
+        return tutorials.value.find(tutorial => tutorial["id"] === idNum);
+    }
+
+    function addTutorial(tutorial) {
+        publishingApi.createTutorial(tutorial).then((response) => {
+            const resource = response.data;
+            const newTutorial = TutorialAssembler.toEntityFromResource(resource);
+            tutorials.value.push(newTutorial);
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    function updateTutorial(tutorial) {
+        publishingApi.updateTutorial(tutorial).then((response) => {
+            const resource = response.data;
+            const updatedTutorial = TutorialAssembler.toEntityFromResource(resource);
+            const index = tutorials.value.findIndex(t => t["id"] === updatedTutorial.id);
+            if (index !== -1) {
+                tutorials.value[index] = updatedTutorial;
+            }
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    function deleteTutorial(tutorial) {
+        publishingApi.deleteTutorial(tutorial.id).then((response) => {
+            const index = tutorials.value.findIndex(t => t["id"] === tutorial.id);
+            if (index !== -1) {
+                tutorials.value.splice(index, 1);
+            }
+        }).catch((error) => {
+            errors.value.push(error);
+        });
+    }
+
+    return {
+        categories,
+        tutorials,
+        errors,
+        categoriesLoaded,
+        tutorialsLoaded,
+        categoriesCount,
+        tutorialCount,
+        fetchCategories,
+        getCategoryById,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+        fetchTutorials,
+        getTutorialById,
+        addTutorial,
+        updateTutorial,
+        deleteTutorial
+    };
+});
+
+export default publishingApi;
