@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Home from "@/shared/presentation/views/home.vue";
-import About from "@/shared/presentation/views/about.vue";
+
+const about = () => import('./shared/presentation/views/about.vue');
+const pageNotFound = () => import('./shared/presentation/views/pageNotFound.vue');
 
 const routes =
     [
@@ -13,8 +15,18 @@ const routes =
         {
             path: '/about',
             name: 'about',
-            component: About,
+            component: about,
             meta: { title: 'About' }
+        },
+        {
+            path: '/',
+            redirect: { name: '/home' }
+        },
+        {
+            path: '/:pageMatch(.*)*',
+            name: 'not-found',
+            component: pageNotFound,
+            meta: { title: 'Page Not Found' }
         },
     ];
 
