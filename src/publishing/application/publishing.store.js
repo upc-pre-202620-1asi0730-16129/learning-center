@@ -147,4 +147,4 @@ const usePublishingStore = defineStore("publishing", () => {
     };
 });
 
-export default publishingApi;
+export default usePublishingStore;
