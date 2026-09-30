@@ -1,59 +1,55 @@
 <script setup>
-
 import {useI18n} from "vue-i18n";
-import usePublishingStore from "@/publishing/application/publishing.store.js";
+import {useRoute, useRouter} from "vue-router";
+import usePublishingStore from "../../application/publishing.store.js";
 import {computed, onMounted, ref} from "vue";
-import {useRoute} from "vue-router";
-import {Category} from "@/publishing/domain/model/category.entity.js";
+import {Category} from "../../domain/model/category.entity.js";
 
 const {t} = useI18n();
 const route = useRoute();
 const router = useRouter();
 const store = usePublishingStore();
-const { errors, addCategory, updateCategory } = store;
+const {errors, addCategory, updateCategory} = store;
 
-const form = ref({
-  name: '',
-});
-
-const isEdit = computed(() => {
-  return !!route.params.id;
-});
+const form = ref({name: ''});
+const isEdit = computed(() => !!route.params.id);
 
 onMounted(() => {
-  console.log("Mounted category form");
   console.log(route.params.id);
   if (isEdit.value) {
     const category = getCategoryById(route.params.id);
-    if (category) {
-      form.value.name = category.name;
-    } else {
-      router.push({ name: 'publishing-categories' });
-    }
+    console.log(category);
+    if (category) form.value.name = category.name; else router.push({name: 'publishing-categories'});
   }
 });
 
-function getCategoryById(id){
+/**
+ * Retrieves a category by its ID.
+ * @param {string} id - The ID of the category.
+ * @returns {Category|null} - The category object if found, null otherwise.
+ */
+function getCategoryById(id) {
   return store.getCategoryById(id);
 }
 
+/**
+ * Saves the category, either by adding a new one or updating an existing one.
+ */
 const saveCategory = () => {
   const category = new Category({
     id: isEdit.value ? route.params.id : null,
     name: form.value.name,
   });
-  if (isEdit.value) {
-    updateCategory(category);
-  } else {
-    addCategory(category);
-  }
+  if (isEdit.value) updateCategory(category); else addCategory(category);
   navigateBack();
-}
+};
 
+/**
+ * Navigates back to the publishing categories list.
+ */
 const navigateBack = () => {
-  router.push({ name: 'publishing-categories' });
-}
-
+  router.push({name: 'publishing-categories'});
+};
 </script>
 
 <template>
@@ -62,14 +58,13 @@ const navigateBack = () => {
     <form @submit.prevent="saveCategory">
       <div class="field mb-3">
         <label for="name">{{ t('category.name') }}</label>
-        <pv-input-text id="name" v-model="form.name" class="w-full" required />
+        <pv-input-text id="name" v-model="form.name" class="w-full" required/>
       </div>
-      <pv-button :label="t('category.save')" icon="pi pi-save" type="submit" />
-      <pv-button :label="t('category.cancel')" class="ml-2" saverity="secondary" @click="navigateBack" />
+      <pv-button :label="t('category.save')" icon="pi pi-save" type="submit"/>
+      <pv-button :label="t('category.cancel')" class="ml-2" severity="secondary" @click="navigateBack"/>
     </form>
     <div v-if="errors.length" class="text-red-500 mt-3">
-      {{ t('errors.occurred') }}:
-      {{ errors.map(e => e.message).join(', ') }}
+      {{ t('errors.occurred') }}: {{ errors.map(e => e.message).join(', ') }}
     </div>
   </div>
 </template>
