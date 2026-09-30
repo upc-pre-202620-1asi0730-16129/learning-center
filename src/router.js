@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import Home from "@/shared/presentation/views/home.vue";
 
 const about = () => import('./shared/presentation/views/about.vue');
-const pageNotFound = () => import('./shared/presentation/views/pageNotFound.vue');
+const pageNotFound = () => import('./shared/presentation/views/page-not-found.vue');
 
 const routes =
     [
