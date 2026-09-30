@@ -20,7 +20,7 @@ const routes =
         },
         {
             path: '/',
-            redirect: { name: '/home' }
+            redirect: '/home'
         },
         {
             path: '/:pageMatch(.*)*',
