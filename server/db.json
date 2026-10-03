@@ -1,0 +1,36 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Vue.js"
+    },
+    {
+      "id": 2,
+      "name": "JavaScript"
+    },
+    {
+      "id": 3,
+      "name": "CSS"
+    }
+  ],
+  "tutorials": [
+    {
+      "id": 1,
+      "title": "Learn Vue.js",
+      "summary": "A comprehensive guide to learning Vue.js.",
+      "categoryId": 1
+    },
+    {
+      "id": 2,
+      "title": "Mastering JavaScript",
+      "summary": "Advanced techniques for JavaScript developers.",
+      "categoryId": 2
+    },
+    {
+      "id": 3,
+      "title": "CSS for Beginners",
+      "summary": "An introduction to CSS for web development.",
+      "categoryId": 3
+    }
+  ]
+}
