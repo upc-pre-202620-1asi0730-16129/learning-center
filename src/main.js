@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from './app.vue'
 import PrimeVue from 'primevue/config'
 import Material from '@primeuix/themes/material'
 import 'primeflex/primeflex.css'
