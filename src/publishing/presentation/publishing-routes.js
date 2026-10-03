@@ -15,13 +15,13 @@ const publishingRoutes = [
     },
     {
         path: 'categories/new',
-        name: 'publishing-categories-new',
+        name: 'publishing-category-new',
         component: categoryForm,
         meta: { title: 'New Category' }
     },
     {
         path: 'categories/:id/edit',
-        name: 'publishing-categories-edit',
+        name: 'publishing-category-edit',
         component: categoryForm,
         meta: { title: 'Edit Category' }
     },
@@ -33,13 +33,13 @@ const publishingRoutes = [
     },
     {
         path: 'tutorials/new',
-        name: 'publishing-tutorials-new',
+        name: 'publishing-tutorial-new',
         component: tutorialForm,
         meta: { title: 'New Tutorial' }
     },
     {
         path: 'tutorials/:id/edit',
-        name: 'publishing-tutorials-edit',
+        name: 'publishing-tutorial-edit',
         component: tutorialForm,
         meta: { title: 'Edit Tutorial' }
     }
